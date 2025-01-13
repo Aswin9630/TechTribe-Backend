@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
         lastName : {
             type:String,
             minlength:[1,"Lastname must be atleast min-1 & max-20 char"],
-            maxlength:20
+            maxlength:[20,"Lastname must be atleast min-1 & max-20 char"],
         },
         email : {
             type:String,
@@ -22,11 +22,9 @@ const userSchema = new mongoose.Schema(
         password : {
             type:String,
             required:true,
-            minlength:8
         },
         age : {
             type:Number,
-            required:true
         },
         skills:{
             type:[String],
