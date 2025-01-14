@@ -32,7 +32,7 @@ const signUpController = async(req,res,next)=>{
         return res.status(201).json({ success:true, message:"User created" , user:userDetails })
 
     } catch (error) {
-        return next(errorHandler(500,error.message))
+        return next(errorHandler(400,error.message))
     }   
 }
 
@@ -56,9 +56,14 @@ const signInController = async(req,res,next)=>{
      res.status(200).json({ success:true, message:"Login Success",user:userDetails})
 
     } catch (error) {
-        return next(errorHandler(500,error.message))
+        return next(errorHandler(400,error.message))
     }
 }
 
+const logOutController = async(req,res)=>{
+    res.cookie("token",null,{expiresIn:new Date(Date.now())})
+    res.status(200).json({success:true, message:"Logout success"})
+}
 
-module.exports = {signInController,signUpController}
+
+module.exports = {signInController,signUpController,logOutController}
