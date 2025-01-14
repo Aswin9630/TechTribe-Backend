@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt")
 const User = require("../model/userModel")
-const setTokenAndCookie = require("../middleware/setToken&Cookies")
+const generateTokenAndCookie = require("../middleware/generateToken&Cookies")
 const errorHandler  = require("../utils/errorHandler")
 
 const signUpController = async(req,res,next)=>{
-    const {firstName,email,password} = req.body
-    if( !firstName || !email || !password ){
+    const {firstName,lastName,email,password,skills,gender,age} = req.body
+    if( !firstName || !lastName|| !email || !password ||!skills ){
         return next(errorHandler(400,"All fields are required"))
     }
     try {
@@ -17,11 +17,15 @@ const signUpController = async(req,res,next)=>{
         const hashedPassword = await bcrypt.hash( password , 10 ) 
         const newUser = new User({
             firstName,
+            lastName,
             email,
-            password:hashedPassword
+            password:hashedPassword, 
+            skills,
+            gender,
+            age
         })
         await newUser.save();  
-        const token = await setTokenAndCookie(res,newUser._id)
+        const token = await generateTokenAndCookie(res,newUser._id)
 
         const {password:_ignored,...userDetails} = newUser._doc
 
@@ -47,7 +51,7 @@ const signInController = async(req,res,next)=>{
      if(!comparePassword){
         return next(errorHandler(401,"incorrect credentials"));
      }
-     const token = setTokenAndCookie(res,userExist._id)
+     const token = generateTokenAndCookie(res,userExist._id)
      const {password:_ignored,...userDetails} = userExist._doc
      res.status(200).json({ success:true, message:"Login Success",user:userDetails})
 
@@ -55,5 +59,6 @@ const signInController = async(req,res,next)=>{
         return next(errorHandler(500,error.message))
     }
 }
+
 
 module.exports = {signInController,signUpController}

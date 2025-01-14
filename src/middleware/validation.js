@@ -1,14 +1,16 @@
 const { validationResult,check } = require("express-validator")
 
 
-const signUpValidation = ()=>[
+const signUpValidation = ()=>[    
     check("firstName","Firstname is required").isString(),
+    check("lastName","Lastname is required").isString(),
     check("email","Email is required").isEmail(),
     check("password")
         .isLength({min:8}).withMessage("Password must includes 8 or more characters")
         .matches(/[A-Z]/).withMessage("Password must includes atleast one uppercase letter")
         .matches(/[a-z]/).withMessage("Password must includes atleast one number")
-        .matches(/[!@#$%^&*(){}:"<>?,.|]/).withMessage("Password must includes atleast one special characters")
+        .matches(/[!@#$%^&*(){}:"<>?,.|]/).withMessage("Password must includes atleast one special characters"),
+    check("skills","required min 1 & max-5 skills")
 
 ]
 

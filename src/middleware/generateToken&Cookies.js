@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 
-const setTokenAndCookie = async(res,userId)=>{
+const generateTokenAndCookie = async(res,userId)=>{
    const token = jwt.sign(
     {id:userId},
     process.env.ACCESS_TOKEN_SECRET_KEY,
@@ -12,4 +12,4 @@ const setTokenAndCookie = async(res,userId)=>{
    return token;
 }
 
-module.exports = setTokenAndCookie
+module.exports = generateTokenAndCookie

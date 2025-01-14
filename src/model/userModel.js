@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
         },
         lastName : {
             type:String,
+            required:true,
             minlength:[1,"Lastname must be atleast min-1 & max-20 char"],
             maxlength:[20,"Lastname must be atleast min-1 & max-20 char"],
         },
@@ -28,14 +29,23 @@ const userSchema = new mongoose.Schema(
         },
         skills:{
             type:[String],
-            default:[]
-        },
+            required:true,
+            validate:{
+                validator: function(skills){
+                    return skills.length >=1 && skills.length <=5
+                },
+                message:"Skills should include at least 1 and at most 5 items"
+            }
+            },
+
         gender:{
             type:String,
-            enum:{
-                values:["men","women","other"],
-                message:"Gender should be one of 'men'/'women'/'other'",
-            },
+            validate (value){
+                if(!["male","female","other"].includes(value)){
+                    throw new Error("Gender must be one of male, female or other")
+                }
+            }
+            ,
         },    
     },
     {
