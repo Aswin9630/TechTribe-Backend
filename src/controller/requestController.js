@@ -50,4 +50,39 @@ const sendConnectionRequestController = async(req,res,next)=>{
     }
 }
 
-module.exports = sendConnectionRequestController;
+const reviewConnectionRequestController = async(req,res,next)=>{
+    try {
+        const { id } = req.user;
+        const loggedInUser = await User.findById(id)
+        const { status, requestId } = req.params
+
+        const allowedStatus = ["accepted","rejected"]
+        if(!allowedStatus.includes(status)){
+            return next(errorHandler(400,"Status is not valid"))
+        }
+
+        const isConnectionRequestExist = await ConnectionRequest.findOne({
+            _id:requestId,
+            toUserId:loggedInUser._id,
+            status:"interested"
+        })
+        if(!isConnectionRequestExist){
+            return next(errorHandler(404,"Request not found"))
+        }
+
+        if(ConnectionRequest.fromUserId===loggedInUser._id){
+            return next(errorHandler(400,"Oops..!!! You cannot send request to yourself"))
+        }
+
+         isConnectionRequestExist.status = status;
+         const data = await isConnectionRequestExist.save()
+
+         res.status(200).json({ success:true, message:`connection request ${status}`, data})
+
+        
+    } catch (error) {
+        return next(errorHandler(400,error.message))
+    }
+}
+
+module.exports = {sendConnectionRequestController, reviewConnectionRequestController};

@@ -21,7 +21,7 @@ const serverAndDBconnect = async () => {
     await connectDB();
     app.listen(PORT, () => console.log("Server running on port:" + PORT));
   } catch (error) {
-    console.error("Failed to connect to DB or start server:", error.message);
+    console.error("Failed to connect to DB or server:", error.message);
     process.exit(1);
   }
 };
