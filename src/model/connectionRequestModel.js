@@ -17,7 +17,9 @@ const connectionRequestSchema = new mongoose.Schema({
             message:`{VALUES} is not a valid status type`,
         }
     }
-},{timestamps:true})
+},{timestamps:true});
+
+connectionRequestSchema.index({fromUserId:1,toUserId:1})
 
 const ConnectionRequest = new mongoose.model("ConnectionRequest",connectionRequestSchema);
 
