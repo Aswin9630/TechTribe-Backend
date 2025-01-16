@@ -7,7 +7,7 @@ const sendConnectionRequestController = async(req,res,next)=>{
         const {id} = req.user;
         const user = await User.findById(id)
 
-        const fromUserId = user._id;
+        const fromUserId = user._id; 
         const toUserId = req.params.toUserId
         const status = req.params.status
 
@@ -20,10 +20,6 @@ const sendConnectionRequestController = async(req,res,next)=>{
         const toUser = await User.findById(toUserId)
         if(!toUser){
             return next(errorHandler(404,"User not found"));
-        }
-
-        if(ConnectionRequest.fromUserId===toUserId){
-            return next(errorHandler(400,"Oops..!!! You cannot send request to yourself"))
         }
 
         const isConnectionRequestExist = await ConnectionRequest.findOne({

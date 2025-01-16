@@ -52,6 +52,6 @@ const userSchema = new mongoose.Schema(
 
     userSchema.index({firstName:1})
 
-const User = new mongoose.model("user",userSchema);
+const User = new mongoose.model("User",userSchema);
 
 module.exports = User;

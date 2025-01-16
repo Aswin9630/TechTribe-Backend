@@ -5,6 +5,7 @@ dotenv.config();
 const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
 const requestRouter = require("./routes/requestRouter");
+const reqReceivedRouter = require("./routes/requestReceivedRouter")
 const connectDB = require("./config/database");
 const PORT = process.env.PORT;
 const app = express();
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 app.use("/request", requestRouter);
+app.use("/user",reqReceivedRouter)
 
 const serverAndDBconnect = async () => {
   try {
