@@ -3,6 +3,8 @@ const User = require("../model/userModel");
 const errorHandler = require("../utils/errorHandler");
 
 
+const USER_SAFE_DATA= ["firstName","lastName","age","gender","skills"]
+
 const receivedRequestController = async(req, res, next)=>{
     try {
         const { id } = req.user;
@@ -11,7 +13,7 @@ const receivedRequestController = async(req, res, next)=>{
         const pendingReceivedRequest = await ConnectionRequest.find({
             toUserId:loggedInUser._id,
             status:"interested"
-        }).populate("fromUserId" ,["firstName","lastName","age","gender"]); 
+        }).populate("fromUserId" ,USER_SAFE_DATA); 
 
         if(!pendingReceivedRequest){
             return next(errorHandler(400,"something went wrong while fetching data to get pending request"))
@@ -54,4 +56,36 @@ const acceptedConnectionController = async (req,res,next)=>{
     }
 }
 
-module.exports = {receivedRequestController,acceptedConnectionController};
+const feedController = async(req,res,next)=>{
+    try {
+        const { id } = req.user;
+        const loggedInUser = await User.findById(id);
+
+        const connectionRequest = await ConnectionRequest.find({
+            $or:[
+                {fromUserId:loggedInUser._id},
+                {toUserId:loggedInUser._id},
+            ]
+        }).select("fromUserId toUserId")
+
+        const hideUsersFromFeed = new Set();
+        connectionRequest.forEach((req)=>{
+            hideUsersFromFeed.add(req.fromUserId.toString()),
+            hideUsersFromFeed.add(req.toUserId.toString())
+        })
+
+        const users = await User.find({
+            $and:[
+                {_id: { $nin : Array.from(hideUsersFromFeed)}},
+                {_id: {$ne:loggedInUser._id}}
+            ]
+        }).select(USER_SAFE_DATA)  
+        
+
+        res.status(200).json({ success:true, message:"successfully" , data:users });
+    } catch (error) {
+        return next(errorHandler(400,error.message))
+    }
+}
+
+module.exports = {receivedRequestController, acceptedConnectionController, feedController };
