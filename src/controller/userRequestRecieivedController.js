@@ -2,6 +2,7 @@ const ConnectionRequest = require("../model/connectionRequestModel");
 const User = require("../model/userModel");
 const errorHandler = require("../utils/errorHandler");
 
+
 const receivedRequestController = async(req, res, next)=>{
     try {
         const { id } = req.user;
@@ -24,4 +25,33 @@ const receivedRequestController = async(req, res, next)=>{
     }
 }
 
-module.exports = receivedRequestController;
+const acceptedConnectionController = async (req,res,next)=>{
+    try {
+        const { id } = req.user;
+        const loggedInUser = await User.findById(id);
+        
+        const connectionRequest = await ConnectionRequest.find({
+            $or:[
+                { toUserId:loggedInUser._id , status:"accepted" },
+                { fromUserId:loggedInUser._id , status:"accepted" },
+            ]
+        })
+        .populate( "fromUserId", ["firstName","age","gender"] )
+        .populate( "toUserId", ["firstName","age","gender"] )
+
+       const data = connectionRequest.map((row)=>{
+        if(row.fromUserId._id.toString() === loggedInUser._id.toString()){
+            return row.toUserId;
+        }
+            return row.fromUserId;
+       })
+
+        res.status(200).json({ success:true, message:"Successfully fetched all connections", data })
+
+
+    } catch (error) {
+        return next(errorHandler(400,error.message))
+    }
+}
+
+module.exports = {receivedRequestController,acceptedConnectionController};
