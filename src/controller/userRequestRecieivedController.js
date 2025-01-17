@@ -3,7 +3,7 @@ const User = require("../model/userModel");
 const errorHandler = require("../utils/errorHandler");
 
 
-const USER_SAFE_DATA= ["firstName","lastName","age","gender","skills"]
+const USER_SAFE_DATA= ["firstName","lastName","age","gender","skills","photoURL"]
 
 const receivedRequestController = async(req, res, next)=>{
     try {
@@ -38,8 +38,8 @@ const acceptedConnectionController = async (req,res,next)=>{
                 { fromUserId:loggedInUser._id , status:"accepted" },
             ]
         })
-        .populate( "fromUserId", ["firstName","age","gender"] )
-        .populate( "toUserId", ["firstName","age","gender"] )
+        .populate( "fromUserId",USER_SAFE_DATA)
+        .populate( "toUserId",USER_SAFE_DATA)
 
        const data = connectionRequest.map((row)=>{
         if(row.fromUserId._id.toString() === loggedInUser._id.toString()){
@@ -58,8 +58,15 @@ const acceptedConnectionController = async (req,res,next)=>{
 
 const feedController = async(req,res,next)=>{
     try {
+
         const { id } = req.user;
         const loggedInUser = await User.findById(id);
+
+        const page = parseInt(req.query.page) || 1 ;
+        let limit = parseInt(req.query.limit) || 10 ;
+            limit = limit > 50 ? 50 : limit ;
+        const skip = (page-1)*limit;
+
 
         const connectionRequest = await ConnectionRequest.find({
             $or:[
@@ -79,7 +86,7 @@ const feedController = async(req,res,next)=>{
                 {_id: { $nin : Array.from(hideUsersFromFeed)}},
                 {_id: {$ne:loggedInUser._id}}
             ]
-        }).select(USER_SAFE_DATA)  
+        }).select(USER_SAFE_DATA).skip(skip).limit(limit);
         
 
         res.status(200).json({ success:true, message:"successfully" , data:users });
