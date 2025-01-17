@@ -1,4 +1,5 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const USER_ICON = require("../utils/constants");
 
 const userSchema = new mongoose.Schema(
     {
@@ -46,7 +47,12 @@ const userSchema = new mongoose.Schema(
                 }
             }
             ,
-        },    
+        },
+        photoURL:{
+            type:String,
+            default:USER_ICON,
+            required:true
+        }    
     },
     {timestamps:true});
 
