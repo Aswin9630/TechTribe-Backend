@@ -28,16 +28,6 @@ const userSchema = new mongoose.Schema(
         age : {
             type:Number,
         },
-        skills:{
-            type:[String],
-            required:true,
-            validate:{
-                validator: function(skills){
-                    return skills.length >=1 && skills.length <=5
-                },
-                message:"Skills should include at least 1 and at most 5 items"
-            }
-            },
 
         gender:{
             type:String,

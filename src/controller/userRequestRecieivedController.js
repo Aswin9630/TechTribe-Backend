@@ -3,7 +3,7 @@ const User = require("../model/userModel");
 const errorHandler = require("../utils/errorHandler");
 
 
-const USER_SAFE_DATA= ["firstName","lastName","age","gender","skills","photoURL"]
+const USER_SAFE_DATA= ["firstName","lastName","age","gender","designation","photoURL"]
 
 const receivedRequestController = async(req, res, next)=>{
     try {
