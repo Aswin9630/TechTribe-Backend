@@ -16,7 +16,7 @@ const getUserProfile = async (req, res, next) => {
   }
 };
 
-const updateUserProfile = async (req, res, next) => {
+const updateUserProfile = async (req, res, next) => { 
   try {
     if(!validateEditProfileData(req)){
       throw new Error("invalid field edit request: email or password")

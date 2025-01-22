@@ -45,12 +45,12 @@ const signInController = async(req,res,next)=>{
     }
     try {
      const userExist = await User.findOne({email});
-     if(!userExist){
-        return next(errorHandler(401,"User not found"))
+     if(!userExist){ 
+        return next(errorHandler(401,"Email not exist"))
      }
      comparePassword = await bcrypt.compare(password,userExist.password)
      if(!comparePassword){
-        return next(errorHandler(401,"incorrect credentials"));
+        return next(errorHandler(401,"incorrect email or password"));
      }
      const token = generateTokenAndCookie(res,userExist._id)
      const {password:_ignored,...userDetails} = userExist._doc
@@ -59,8 +59,7 @@ const signInController = async(req,res,next)=>{
     } catch (error) {
         return next(errorHandler(400,error.message))
     }
-}
-
+}  
 const logOutController = async(req,res)=>{
     res.cookie("token",null,{expiresIn:new Date(Date.now())})
     res.status(200).json({success:true, message:"Logout success"})

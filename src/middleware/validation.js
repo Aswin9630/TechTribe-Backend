@@ -6,7 +6,7 @@ const signUpValidation = ()=>[
     check("lastName","Lastname is required").isString(),
     check("email","Email is required").isEmail(),
     check("password")
-        .isLength({min:8}).withMessage("Password must includes 8 or more characters")
+        .isLength({ min:8 , max:20 }).withMessage("Password must be between 8 and 20 characters")
         .matches(/[A-Z]/).withMessage("Password must includes atleast one uppercase letter")
         .matches(/[a-z]/).withMessage("Password must includes atleast one number")
         .matches(/[!@#$%^&*(){}:"<>?,.|]/).withMessage("Password must includes atleast one special characters"),

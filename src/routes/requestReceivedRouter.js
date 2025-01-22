@@ -7,4 +7,4 @@ router.get("/request/received", verifyUser, receivedRequestController );
 router.get("/connections", verifyUser, acceptedConnectionController );
 router.get("/feed", verifyUser, feedController );
  
-module.exports = router
+module.exports = router  

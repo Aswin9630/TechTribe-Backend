@@ -7,5 +7,4 @@ router.get("/view",verifyUser,getUserProfile)
 router.patch("/update",verifyUser,updateUserProfile)
 router.patch("/update/password",verifyUser,updateUserProfilePassword)
 
-
 module.exports = router
