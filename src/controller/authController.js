@@ -4,8 +4,8 @@ const generateTokenAndCookie = require("../middleware/generateToken&Cookies")
 const errorHandler  = require("../utils/errorHandler")
 
 const signUpController = async(req,res,next)=>{
-    const {firstName,lastName,email,password,skills,gender,age,photoURL} = req.body
-    if( !firstName || !lastName|| !email || !password ||!skills ||!photoURL ){
+    const {firstName,lastName,email,password,skills,gender,age,photoURL,designation} = req.body
+    if( !firstName || !lastName|| !email || !password ||!skills ||!photoURL || !designation ){
         return next(errorHandler(400,"All fields are required"))
     }
     try {
@@ -23,7 +23,8 @@ const signUpController = async(req,res,next)=>{
             skills,
             gender,
             age,
-            photoURL
+            photoURL,
+            designation
         })
         await newUser.save();  
         const token = await generateTokenAndCookie(res,newUser._id)

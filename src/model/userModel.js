@@ -52,7 +52,11 @@ const userSchema = new mongoose.Schema(
             type:String,
             default:USER_ICON,
             required:true
-        }    
+        },
+        designation:{
+            type:String,
+            required:true
+        }
     },
     {timestamps:true});
 

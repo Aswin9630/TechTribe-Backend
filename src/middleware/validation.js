@@ -10,8 +10,8 @@ const signUpValidation = ()=>[
         .matches(/[A-Z]/).withMessage("Password must includes atleast one uppercase letter")
         .matches(/[a-z]/).withMessage("Password must includes atleast one number")
         .matches(/[!@#$%^&*(){}:"<>?,.|]/).withMessage("Password must includes atleast one special characters"),
-    check("skills","required min 1 & max-5 skills")
-
+    check("skills","required min 1 & max-5 skills"),
+    check("designation","Please provide your Designation")
 ]
 
 
