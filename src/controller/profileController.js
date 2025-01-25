@@ -1,6 +1,6 @@
 const User = require("../model/userModel");
 const errorHandler = require("../utils/errorHandler");
-const validateEditProfileData = require("../utils/updatevalidation");
+const validateEditProfileData = require("../utils/updateValidation");
 
 const getUserProfile = async (req, res, next) => {
   try {
