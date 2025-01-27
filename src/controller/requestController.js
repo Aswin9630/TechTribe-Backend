@@ -39,7 +39,10 @@ const sendConnectionRequestController = async(req,res,next)=>{
             status
         })
         const data = await newConnectionRequest.save();
-        const emailResponse =await sendEmail.run(`${user.firstName} send a connection request`)
+        if(newConnectionRequest.status==="interested"){
+
+            const emailResponse =await sendEmail.run(`${user.firstName} send a connection request to ${toUser.firstName}`)
+        }
 
         res.status(200).json({ success:true, message:`${user.firstName.toUpperCase()} is ${status} in ${toUser.firstName}`, connectionDetails:data })
          
