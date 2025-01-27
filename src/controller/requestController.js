@@ -1,6 +1,7 @@
 const ConnectionRequest = require("../model/connectionRequestModel");
 const User = require("../model/userModel");
 const errorHandler = require("../utils/errorHandler")
+const sendEmail = require("../utils/sendEmail")
 
 const sendConnectionRequestController = async(req,res,next)=>{
     try {
@@ -30,7 +31,7 @@ const sendConnectionRequestController = async(req,res,next)=>{
         })
         if(isConnectionRequestExist){
             return next(errorHandler(400,"Connection request already exist!"))
-        }      
+        }       
 
         const newConnectionRequest = new ConnectionRequest({
             fromUserId,
@@ -38,6 +39,7 @@ const sendConnectionRequestController = async(req,res,next)=>{
             status
         })
         const data = await newConnectionRequest.save();
+        const emailResponse =await sendEmail.run(`${user.firstName} send a connection request`)
 
         res.status(200).json({ success:true, message:`${user.firstName.toUpperCase()} is ${status} in ${toUser.firstName}`, connectionDetails:data })
          
