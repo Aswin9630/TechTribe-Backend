@@ -8,6 +8,7 @@ const profileRouter = require("./routes/profileRouter");
 const requestRouter = require("./routes/requestRouter");
 const reqReceivedRouter = require("./routes/requestReceivedRouter")
 const connectDB = require("./config/database");
+// require("./utils/cronJobs")
 const PORT = process.env.PORT;
 const app = express();
 
@@ -25,13 +26,13 @@ app.use("/request", requestRouter);
 app.use("/user",reqReceivedRouter)
  
 const serverAndDBconnect = async () => {   
-  try {
+  try { 
     await connectDB();
     app.listen(PORT, () => console.log("Server running on port:" + PORT));
   } catch (error) {
     console.error("Failed to connect to DB or server:", error.message);
     process.exit(1);
-  }
+  } 
 };
 serverAndDBconnect();
 
