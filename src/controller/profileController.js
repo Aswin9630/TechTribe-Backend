@@ -12,7 +12,7 @@ const getUserProfile = async (req, res, next) => {
     const { password: _ignored, ...userDetails } = user._doc;
     res.status(200).json({ userInfo: userDetails });
   } catch (error) {
-    return next(errorHandler(400, error.message));
+    return next(errorHandler(400, error.message)); 
   }
 };
 
