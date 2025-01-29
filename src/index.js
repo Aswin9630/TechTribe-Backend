@@ -7,6 +7,7 @@ const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
 const requestRouter = require("./routes/requestRouter");
 const reqReceivedRouter = require("./routes/requestReceivedRouter")
+const createOrderRouter = require("./routes/paymentRouter");
 const connectDB = require("./config/database");
 // require("./utils/cronJobs")
 const PORT = process.env.PORT;
@@ -24,6 +25,7 @@ app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 app.use("/request", requestRouter);
 app.use("/user",reqReceivedRouter)
+app.use("/payment",createOrderRouter)
  
 const serverAndDBconnect = async () => {   
   try { 
