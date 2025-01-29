@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const USER_ICON = require("../utils/constants");
+const {USER_ICON} = require("../utils/constants");
 
 const userSchema = new mongoose.Schema(
     {
