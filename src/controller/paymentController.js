@@ -1,5 +1,6 @@
 const PaymentModel = require("../model/paymentModel");
 const User = require("../model/userModel");
+const { MEMBERSHIPAMOUNT, CURRENCY } = require("../utils/constants");
 const errorHandler = require("../utils/errorHandler");
 const razorpayInstance = require("../utils/razorpay");
 
@@ -9,8 +10,8 @@ const createOrderController = async(req, res, next)=>{
     const user = await User.findById(id);
     try {
         const order = await razorpayInstance.orders.create({
-            amount: 50000,
-            currency: "INR",
+            amount: MEMBERSHIPAMOUNT[membershipType] * 100,
+            currency: CURRENCY,
             receipt: "receipt#1",
             notes: {
               firstName:user.firstName,
