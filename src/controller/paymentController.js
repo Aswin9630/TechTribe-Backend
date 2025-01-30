@@ -43,8 +43,13 @@ const createOrderController = async(req, res, next)=>{
 const webHooksController = async(req,res,next)=>{
   try {
 
-    const webhookSignature = req.headers["X-Razorpay-Signature"]; 
-    const isWebhookValid = validateWebhookSignature(JSON.stringify(req.body), webhookSignature, process.env.RAZORPAY_WEBHOOK_SECRET)
+    const webhookSignature = req.headers["x-razorpay-signature"]; 
+    const isWebhookValid = validateWebhookSignature(req.rawBody, webhookSignature, process.env.RAZORPAY_WEBHOOK_SECRET)
+    console.log("Received Headers:", req.headers);
+    console.log("Received Webhook Signature:", webhookSignature);
+    console.log("Received Raw Body:", req.rawBody);
+    console.log("Webhook Secret:", process.env.RAZORPAY_WEBHOOK_SECRET);
+
     if(!isWebhookValid){
       return next(errorHandler(400,"Webhook Signature is not valid"))
     }
