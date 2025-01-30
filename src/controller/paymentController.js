@@ -55,7 +55,8 @@ const webHooksController = async(req,res,next)=>{
     }
 
     const paymentDetails = req.body.payload.payment.entity;
-    const payment = await PaymentModel.findOne({orderId:paymentDetails.order._id})
+    const orderId = paymentDetails.order_id
+    const payment = await PaymentModel.findOne({orderId})
     if (!payment) {
       return next(errorHandler(400,"Payment record not found"));
   }
