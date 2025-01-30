@@ -18,18 +18,8 @@ app.use(cors({
   credentials:true,
 }
 ));
-app.use((req, res, next) => {
-  if (req.originalUrl === "/api/payment/webhook") {  
-    express.json({
-      verify: (req, res, buf) => {
-        req.rawBody = buf.toString(); 
-      }
-    })(req, res, next);
-  } else {
-    express.json()(req, res, next);
-  }
-});
 
+app.use(express.json())
 app.use(cookieParser());
 
 app.use("/auth", authRouter);
