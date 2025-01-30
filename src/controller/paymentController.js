@@ -74,4 +74,22 @@ const webHooksController = async(req,res,next)=>{
   }
 }
 
-module.exports = {createOrderController,webHooksController};
+const paymentVerify = async(req,res,next)=>{
+  const { id } = req.user
+  const user = await User.findById(id);
+
+  try {
+    
+    if(user.isPremium){
+      return res.json({isPremium:true})
+    }else{
+      return res.json({isPremium:false})
+    }
+
+  } catch (error) {
+    console.error(error)
+    return next(errorHandler(400,error.message))
+  }
+}
+
+module.exports = {createOrderController, webHooksController, paymentVerify};
