@@ -45,7 +45,9 @@ const webHooksController = async(req,res,next)=>{
 
     const webhookSignature = req.headers["x-razorpay-signature"]
     console.log("Received Headers:", req.headers["x-razorpay-signature"]);
-    const isWebhookValid = validateWebhookSignature((req.body), webhookSignature, process.env.RAZORPAY_WEBHOOK_SECRET)
+    console.log("Received body",JSON.stringify(req.body));
+    console.log("Received secret:", process.env.RAZORPAY_WEBHOOK_SECRET);
+    const isWebhookValid = validateWebhookSignature(JSON.stringify(req.body), webhookSignature, process.env.RAZORPAY_WEBHOOK_SECRET)
    
 
     if(!isWebhookValid){
