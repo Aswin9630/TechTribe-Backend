@@ -1,5 +1,6 @@
 const socket = require("socket.io");
 const User = require("../model/userModel");
+const crypto = require("crypto")
 
 const initializeSocket = (server) => {
   const io = socket(server, {
@@ -7,11 +8,15 @@ const initializeSocket = (server) => {
       origin: process.env.FRONTEND_URL,
     },
   });
+
+ const getSecretRoomId = ( userId, targetUserId )=>{
+    return crypto.createHash("sha256").update([userId,targetUserId].sort().join("_")).digest("hex");
+ }
  
   io.on("connection", (socket) => {
 
     socket.on("join", async({ firstName, userId, targetUserId })=>{ 
-        const roomId = [userId,targetUserId].sort().join("_");
+        const roomId = getSecretRoomId( userId, targetUserId );
         socket.join(roomId)  ;
         try {
             const targetUserDetails = await User.findById(targetUserId).select("firstName lastName email photoURL designation");
@@ -22,7 +27,7 @@ const initializeSocket = (server) => {
     })
 
     socket.on("sendMessage", async ({ firstName , userId, targetUserId , text })=>{ 
-        const roomId = [userId,targetUserId].sort().join("_");
+        const roomId = getSecretRoomId( userId, targetUserId );
         io.to(roomId).emit("messageReceived", { firstName, text });  
     })
 
