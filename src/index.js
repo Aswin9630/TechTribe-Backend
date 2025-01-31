@@ -3,21 +3,26 @@ dotenv.config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const http = require("http");
 const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
 const requestRouter = require("./routes/requestRouter");
 const reqReceivedRouter = require("./routes/requestReceivedRouter")
 const createOrderRouter = require("./routes/paymentRouter");
 const connectDB = require("./config/database");
+const { initializeSocket } = require("./socket/socket");
 // require("./utils/cronJobs")
 const PORT = process.env.PORT;
 const app = express();
 
+const server = http.createServer(app)
 app.use(cors({
   origin:process.env.FRONTEND_URL,
   credentials:true,
 }
-));
+)); 
+
+initializeSocket(server);
 
 app.use(express.json())
 app.use(cookieParser());
@@ -31,7 +36,7 @@ app.use("/payment",createOrderRouter)
 const serverAndDBconnect = async () => {   
   try { 
     await connectDB();
-    app.listen(PORT, () => console.log("Server running on port:" + PORT));
+    server.listen(PORT, () => console.log("Server running on port:" + PORT));
   } catch (error) {
     console.error("Failed to connect to DB or server:", error.message);
     process.exit(1);
