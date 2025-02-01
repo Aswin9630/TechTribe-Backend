@@ -9,6 +9,7 @@ const profileRouter = require("./routes/profileRouter");
 const requestRouter = require("./routes/requestRouter");
 const reqReceivedRouter = require("./routes/requestReceivedRouter")
 const createOrderRouter = require("./routes/paymentRouter");
+const chatRouter = require("./routes/chatRouter");
 const connectDB = require("./config/database");
 const { initializeSocket } = require("./socket/socket");
 // require("./utils/cronJobs")
@@ -32,6 +33,7 @@ app.use("/profile", profileRouter);
 app.use("/request", requestRouter);
 app.use("/user",reqReceivedRouter)
 app.use("/payment",createOrderRouter)
+app.use("/chat",chatRouter)
  
 const serverAndDBconnect = async () => {   
   try { 
