@@ -23,7 +23,7 @@ const initializeSocket = (server) => {
             const targetUserDetails = await User.findById(targetUserId).select("firstName lastName email photoURL designation");
             socket.emit("targetUserDetails", { targetUserDetails });
         } catch (error) {
-            console.error(error)
+            console.error(error.message)
         }
     })
  

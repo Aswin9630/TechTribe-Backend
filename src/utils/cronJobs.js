@@ -21,10 +21,10 @@ cron.schedule("30 11 * * *", async()=>{
             try {
             const response = await sendEmail.run("New Friend Request from "+email)
             } catch (error) {
-                console.error(error)
+                console.error(error.message)
             }
         }
     } catch (error) {
-        console.error(error)
+        console.error(error.message)
     }
 })

@@ -35,7 +35,7 @@ const createOrderController = async(req, res, next)=>{
           res.status(200).json({ paymentDetails, keyId:process.env.RAZORPAY_KEY_ID }) 
           
     } catch (error) {
-        console.error(error)
+        console.error(error.message)
         return next(errorHandler(400,error.message))
     }
 }
@@ -69,7 +69,7 @@ const webHooksController = async(req,res,next)=>{
 
     return res.status(200).json({mes:"Webhook received successfully"})
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     return next(errorHandler(400, error.message))
   }
 }
@@ -80,14 +80,14 @@ const paymentVerify = async(req,res,next)=>{
 
   try {
     
-    if(user.isPremium){
+    if(user?.isPremium){
       return res.json({isPremium:true})
     }else{
       return res.json({isPremium:false})
     }
 
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     return next(errorHandler(400,error.message))
   }
 }

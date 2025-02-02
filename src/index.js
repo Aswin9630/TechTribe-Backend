@@ -31,9 +31,9 @@ app.use(cookieParser());
 app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 app.use("/request", requestRouter);
-app.use("/user",reqReceivedRouter)
-app.use("/payment",createOrderRouter)
-app.use("/chat",chatRouter)
+app.use("/user",reqReceivedRouter);
+app.use("/payment",createOrderRouter);
+app.use("/chat",chatRouter);
  
 const serverAndDBconnect = async () => {   
   try { 
