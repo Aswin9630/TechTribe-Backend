@@ -4,10 +4,12 @@ const crypto = require("crypto");
 const { Chat } = require("../model/chatSchema");
 
 const initializeSocket = (server) => {
+  
   const io = socket(server, {
     cors: {
       origin: process.env.FRONTEND_URL,
     },
+    path: "/api/socket.io",
   });
 
  const getSecretRoomId = ( userId, targetUserId )=>{

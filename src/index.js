@@ -16,7 +16,8 @@ const { initializeSocket } = require("./socket/socket");
 const PORT = process.env.PORT;
 const app = express();
 
-const server = http.createServer(app)
+const server = http.createServer(app);
+
 app.use(cors({
   origin:process.env.FRONTEND_URL,
   credentials:true,
