@@ -10,6 +10,7 @@ const initializeSocket = (server) => {
       origin: process.env.NODE_ENV === "development" ? process.env.FRONTEND_URL : process.env.PRODUCTION_FRONTEND_URL
     },
     path: "/api/socket.io",
+    transports: ["websocket", "polling"],
     withCredentials:true
   });
 
