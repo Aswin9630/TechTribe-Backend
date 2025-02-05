@@ -7,9 +7,10 @@ const initializeSocket = (server) => {
   
   const io = socket(server, {
     cors: {
-      origin: process.env.FRONTEND_URL,
+      origin: process.env.NODE_ENV === "development" ? process.env.FRONTEND_URL : process.env.PRODUCTION_FRONTEND_URL
     },
     path: "/api/socket.io",
+    withCredentials:true
   });
 
  const getSecretRoomId = ( userId, targetUserId )=>{
